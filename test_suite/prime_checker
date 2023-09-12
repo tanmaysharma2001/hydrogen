@@ -1,0 +1,13 @@
+method IsPrime(n: Integer): Boolean is
+    if n.LessEqual(Integer(1)) then
+        return false
+    end
+    var i := Integer(2)
+    while i.Mult(i).LessEqual(n) loop
+        if n.Rem(i).Equal(Integer(0)) then
+            return false
+        end
+        i := i.Plus(1)
+    end
+    return true
+end
