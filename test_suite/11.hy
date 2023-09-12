@@ -1,0 +1,15 @@
+class Inventory is
+    var inventory:List
+    method add(arg1: Integer, arg2: Integer) is
+        inventory.append(blockItem(arg1, arg2))
+    end
+end
+
+class Item is
+    var itemID: Integer(0)
+    var amount: Integer(0)
+    this(arg1:Integer, arg2: Integer) is
+        this.itemID := arg1
+        this.amount := arg2
+    end
+end  

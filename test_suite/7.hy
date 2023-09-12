@@ -1,0 +1,28 @@
+class simple_bank_account is
+	var card_number : Integer
+	var amount : Integer
+
+	this (a : Integer, b : Integer) is 
+		card_number := a
+		owner_id := b
+		amount := 0
+	end
+
+	method add_amount (a : Integer) is
+		if a.Greater(0) then 
+			amount := amount.Plus(a)
+		end
+	end
+
+	method draw_amount (a : Integer) is
+		c := amount.minus(a)
+		if c.GreaterEqual(0) then
+			amount := c
+		end
+	end
+
+	method show : Integer is 
+		return money
+	end
+
+end
