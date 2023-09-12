@@ -1,4 +1,4 @@
-class Rect is
+class Rectangle is
 	breadth: Integer(0)
 	height: Integer(0)
 	this(arg1: Integer, arg2: Integer) is
