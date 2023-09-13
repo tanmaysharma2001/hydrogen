@@ -1,0 +1,30 @@
+class SortingUtils is
+    method quickSort(arr: Array[Integer], low: Integer, high: Integer) is
+        if low.Less(high) then
+            var pivotIndex: Integer := partition(arr, low, high)
+            quickSort(arr, low, pivotIndex.Minus(1))
+            quickSort(arr, pivotIndex.Plus(1), high)
+        end
+    end
+
+    method partition(arr: Array[Integer], low: Integer, high: Integer) : Integer is
+        var pivot: Integer := arr.get(high)
+        var i: Integer := low.Minus(1)
+        var j: Integer := low
+        while j.Less(high) loop
+            if arr.get(j).LessEqual(pivot) then
+                i := i.Plus(1)
+                // Swap arr[i] and arr[j]
+                var temp: Integer := arr.get(i)
+                arr.set(i, arr.get(j))
+                arr.set(j, temp)
+            end
+            j := j.Plus(1)
+        end
+        // Swap arr[i+1] and arr[high]
+        var temp: Integer := arr.get(i.Plus(1))
+        arr.set(i.Plus(1), arr.get(high))
+        arr.set(high, temp)
+        return i.Plus(1)
+    end
+end

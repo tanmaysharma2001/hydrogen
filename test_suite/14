@@ -1,0 +1,16 @@
+class SortingUtils is
+    method insertionSort(arr: Array[Integer]) is
+        var n: Integer := arr.Length
+        var i: Integer := 2
+        while i.LessEqual(n) loop
+            var key: Integer := arr.get(i)
+            var j: Integer := i.Minus(1)
+            while j.Greater(0) and arr.get(j).GreaterThan(key) loop
+                arr.set(j.Plus(1), arr.get(j))
+                j := j.Minus(1)
+            end
+            arr.set(j.Plus(1), key)
+            i := i.Plus(1)
+        end
+    end
+end
