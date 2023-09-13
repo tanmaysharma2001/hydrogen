@@ -1,4 +1,4 @@
-class SortingUtils is
+class Sorting is
     method quickSort(arr: Array[Integer], low: Integer, high: Integer) is
         if low.Less(high) then
             var pivotIndex: Integer := partition(arr, low, high)
