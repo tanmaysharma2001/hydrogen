@@ -1,7 +1,9 @@
-method SquareInteger(num: Integer): Integer is
-    return num.Mult(num)
-end
+class SquareNum is 
+    method SquareInteger(num: Integer): Integer is
+        return num.Mult(num)
+    end
 
-method SquareReal(num: Real): Real is
-    return num.Mult(num)
+    method SquareReal(num: Real): Real is
+        return num.Mult(num)
+    end
 end
