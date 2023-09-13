@@ -1,0 +1,21 @@
+class SortingUtils is
+    method selectionSort(arr: Array[Integer]) is
+        var n: Integer := arr.Length
+        var i: Integer := 1
+        while i.Less(n) loop
+            var minIndex: Integer := i
+            var j: Integer := i.Plus(1)
+            while j.LessEqual(n) loop
+                if arr.get(j).Less(arr.get(minIndex)) then
+                    minIndex := j
+                end
+                j := j.Plus(1)
+            end
+            // Swap arr[i] and arr[minIndex]
+            var temp: Integer := arr.get(i)
+            arr.set(i, arr.get(minIndex))
+            arr.set(minIndex, temp)
+            i := i.Plus(1)
+        end
+    end
+end
