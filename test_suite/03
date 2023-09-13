@@ -1,9 +1,11 @@
-method MaxInt(a: Array[Integer]) : Integer is
-	var max : Integer.Min
-	var i : Integer(1)
-	while i.Less(a.Length) loop
-		if a.get(i).Greater(max) then max := get(i) end
-		i := i.Plus(1)
-	end
-	return max
+class IntegerArrayMax is
+    method MaxInt(a: Array[Integer]) : Integer is
+	    var max : Integer.Min
+	    var i : Integer(1)
+	    while i.Less(a.Length) loop
+		    if a.get(i).Greater(max) then max := get(i) end
+		    i := i.Plus(1)
+    	end
+	    return max
+    end
 end
