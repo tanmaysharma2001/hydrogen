@@ -1,4 +1,4 @@
-class SortingUtils is
+class Sorting is
     method insertionSort(arr: Array[Integer]) is
         var n: Integer := arr.Length
         var i: Integer := 2
