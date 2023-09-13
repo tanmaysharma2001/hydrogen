@@ -5,7 +5,7 @@ class IntegerArrayMax is
 	    while i.Less(a.Length) loop
 		    if a.get(i).Greater(max) then max := get(i) end
 		    i := i.Plus(1)
-    	end
-	    return max
+        end
+        return max
     end
 end
