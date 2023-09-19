@@ -16,5 +16,5 @@ int main(int argc, char** argv) {
     while (std::getline(std::cin, line)) 
         source += line;
     
-    manager.Analyze(source);
+    manager.analyze(source);
 }
