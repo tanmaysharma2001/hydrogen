@@ -26,7 +26,7 @@ private:
         std::exit(0);
     }
 
-    std::vector<Token> GetTokens(const std::string& source) {
+    std::vector<Token> getTokens(const std::string& source) {
         std::vector<Token> tokens;
         IReader* reader = readers[0];
         std::string buffer = "";
@@ -77,8 +77,8 @@ private:
 public:
     Manager() {}
 
-    std::vector<Token> Analyze(const std::string& source) {
-        std::vector<Token> tokens = GetTokens(source);
+    std::vector<Token> analyze(const std::string& source) {
+        std::vector<Token> tokens = getTokens(source);
         freopen("tokens.txt", "w", stdout);
         for (Token token : tokens) {
             std::cout << token.value << ' ' << token.type << ' ' << token.line << ' ' << token.column << std::endl; 
