@@ -22,9 +22,7 @@ private:
     };
 
     void error(int line, int column) {
-        std::cout << "Invalid token at " << line << ":" << column << "." << std::endl;
-        std::cout << "Press any key to exit..." << std::endl;
-        std::cin.get();
+        std::cout << "Invalid token at line " << line << " column " << column << "." << std::endl;
         std::exit(0);
     }
 
