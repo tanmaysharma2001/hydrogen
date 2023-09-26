@@ -26,60 +26,64 @@ private:
         std::exit(0);
     }
 
-    std::vector<Token> getTokens(const std::string& source) {
+    std::vector<Token> getTokens(std::string& source) {
         std::vector<Token> tokens;
         IReader* reader = readers[0];
         std::string buffer = "";
         int line = 1;
-        int lineI = 0;
+        int colPos = 0;
 
-        std::string modifiedSource = source;
-        if (modifiedSource.back() != '\n')
-            modifiedSource += '\n';
+        if (source.back() != '\n')
+            source += '\n';
 
-        for (int i = 0; i < modifiedSource.length() - 1;) {
-            if (modifiedSource[i] == '\n') {
+        int i = 0;
+        for (; i < source.length() - 1;) {
+            if (source[i] == '\n') {
                 line++;
-                lineI = i;
+                colPos = i;
             }
 
-            if (reader == nullptr || !reader->read(modifiedSource, i, buffer)) {
+            if (reader == nullptr || !reader->read(source, i, buffer)) {
                 if (!buffer.empty()) {
                     std::string type = reader->getTokenType(buffer);
-                    tokens.emplace_back(buffer, type, line, i - lineI);
+                    tokens.emplace_back(buffer, type, line, i - colPos);
                     buffer.clear();
                 }
 
                 if (reader != nullptr) {
                     if (reader->errorExists())
-                        error(line, i - lineI);
+                        error(line, i - colPos);
                     reader->reset();
                     reader = nullptr;
                 }
 
-                if (modifiedSource[i] == ' ' || std::iscntrl(modifiedSource[i]))
+                if (source[i] == ' ' || std::iscntrl(source[i])) {
                     i++;
-                else {
+                } else {
                     for (IReader* r : readers) {
-                        if (r->canStartParsing(modifiedSource, i)) {
+                        if (r->canStartParsing(source, i)) {
                             reader = r;
                             break;
                         }
                     }
                     if (reader == nullptr)
-                        error(line, i - lineI);
+                        error(line, i - colPos);
                 }
             }
         }
 
-        // add last buffer? 
+        if (!buffer.empty()) {
+            std::string type = reader->getTokenType(buffer);
+            tokens.emplace_back(buffer, type, line, i - colPos);
+            buffer.clear();
+        }
         return tokens;
     }
 
 public:
     Manager() {}
 
-    std::vector<Token> analyze(const std::string& source) {
+    std::vector<Token> analyze(std::string& source) {
         std::vector<Token> tokens = getTokens(source);
         freopen("tokens.txt", "w", stdout);
         for (Token token : tokens) {

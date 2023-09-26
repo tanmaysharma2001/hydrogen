@@ -13,8 +13,10 @@ int main(int argc, char** argv) {
     freopen(file.c_str(), "r", stdin);
     
     std::string line;
-    while (std::getline(std::cin, line)) 
-        source += line;
-    
+    char ch;
+    while (EOF != (ch = getchar())) {
+        source += ch;
+    }
+
     manager.analyze(source);
 }
