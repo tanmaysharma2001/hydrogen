@@ -12,7 +12,6 @@ int main(int argc, char** argv) {
     
     freopen(file.c_str(), "r", stdin);
     
-    std::string line;
     char ch;
     while (EOF != (ch = getchar())) {
         source += ch;
