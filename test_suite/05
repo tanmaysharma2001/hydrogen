@@ -1,12 +1,12 @@
 class Rectangle is
-	breadth: Integer(0)
-	height: Integer(0)
+	var breadth: Integer(0)
+	var height: Integer(0)
 	this(arg1: Integer, arg2: Integer) is
 		this.breadth := arg1
 		this.height := arg2
 	end
 
-	method Square(): Integer
+	method Square(): Integer is
 		return this.breadth.Mult(this.height)
 	end
 

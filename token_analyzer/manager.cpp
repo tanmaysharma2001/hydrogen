@@ -85,10 +85,6 @@ public:
 
     std::vector<Token> analyze(std::string& source) {
         std::vector<Token> tokens = getTokens(source);
-        freopen("tokens.txt", "w", stdout);
-        for (Token token : tokens) {
-            std::cout << token.value << ' ' << token.type << ' ' << token.line << ' ' << token.column << std::endl; 
-        }
         return tokens;
     }
 };
