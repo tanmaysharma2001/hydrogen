@@ -6,6 +6,7 @@ public:
     const std::string operands = ".,:=[]()";
 
     bool isOperand(char ch) {
+        if (ch == '=') return false;
         for (const char& op : operands)
             if (op == ch)
                 return true;
