@@ -3,10 +3,15 @@ public:
     std::vector<Node*> classNodes;
 
     RootNode() {
+        initializePrintFunction([this](std::string tab) {
+            for (auto node : classNodes) {
+                node->print(tab);
+            }
+        });
         classNodes = std::vector<Node*>();
     }
 
     void addClassDeclaration(ClassNode* node) {
-        classNodes.push_back(node);
+        classNodes.push_back(new ClassNode(*node));
     }
 };

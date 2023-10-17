@@ -1,4 +1,5 @@
 #include <string>
+#include <functional>
 
 class Node {
 public:
@@ -6,9 +7,15 @@ public:
     int errorLine;
     bool parsingError;
 
-    Node() {
+    std::function<void(std::string)> print; 
+
+    Node() : print([](std::string) {}) { 
         this->parsingError = false;
         this->errorLine = -1;
+    }
+
+    void initializePrintFunction(std::function<void(std::string)> printFunc) { 
+        print = printFunc;
     }
 
     void setTokenNumber(int tokenNumber) {

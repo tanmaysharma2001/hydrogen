@@ -1,0 +1,113 @@
+No Syntax Error Found
+
+Abstract Syntax Tree (children nested with tabs)
+
+Class name: Exponentiation
+Super class: NONE
+Generic class: NONE
+	Variable name: Result
+	integerValue: NONE
+	booleanValue: NONE
+	floatValue: NONE
+	Expression Type: call
+		parent: Real
+			integerValue: 1
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: literal
+	Method name: BinaryExponentiation
+	Return type: Real
+	Parameters
+		param_name: base | param_type: Real
+		param_name: exponent | param_type: Integer
+		Loop
+			integerValue: NONE
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: call
+				parent: exponent
+				parent: Greater
+					integerValue: NONE
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: call
+						parent: Integer
+							integerValue: 0
+							booleanValue: NONE
+							floatValue: NONE
+							Expression Type: literal
+			If Statement
+				integerValue: NONE
+				booleanValue: NONE
+				floatValue: NONE
+				Expression Type: call
+					parent: exponent
+					parent: Rem
+					parent: Equal
+						integerValue: NONE
+						booleanValue: NONE
+						floatValue: NONE
+						Expression Type: call
+							parent: Integer
+								integerValue: 2
+								booleanValue: NONE
+								floatValue: NONE
+								Expression Type: literal
+						integerValue: NONE
+						booleanValue: NONE
+						floatValue: NONE
+						Expression Type: call
+							parent: Integer
+								integerValue: 1
+								booleanValue: NONE
+								floatValue: NONE
+								Expression Type: literal
+				Assignment
+				Lvalue: result
+					integerValue: NONE
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: call
+						parent: result
+						parent: Mult
+							integerValue: NONE
+							booleanValue: NONE
+							floatValue: NONE
+							Expression Type: call
+								parent: base
+			Assignment
+			Lvalue: base
+				integerValue: NONE
+				booleanValue: NONE
+				floatValue: NONE
+				Expression Type: call
+					parent: base
+					parent: Mult
+						integerValue: NONE
+						booleanValue: NONE
+						floatValue: NONE
+						Expression Type: call
+							parent: base
+			Assignment
+			Lvalue: exponent
+				integerValue: NONE
+				booleanValue: NONE
+				floatValue: NONE
+				Expression Type: call
+					parent: exponent
+					parent: Div
+						integerValue: NONE
+						booleanValue: NONE
+						floatValue: NONE
+						Expression Type: call
+							parent: Integer
+								integerValue: 2
+								booleanValue: NONE
+								floatValue: NONE
+								Expression Type: literal
+		Return Statement
+			integerValue: NONE
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: call
+				parent: result

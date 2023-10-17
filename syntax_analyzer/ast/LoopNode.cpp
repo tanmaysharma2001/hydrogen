@@ -4,6 +4,13 @@ public:
     std::vector<Node*> bodyNodes;
 
     LoopNode() {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Loop" << std::endl;
+            expression.print(tab + "\t");
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         bodyNodes = std::vector<Node*>();
     }
 
