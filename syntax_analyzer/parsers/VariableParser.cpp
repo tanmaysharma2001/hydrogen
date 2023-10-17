@@ -17,7 +17,7 @@ public:
         } else {
             if (!(tokenObj.validToken(tokenNumber, "value", "var", 0) &&
                     tokenObj.validToken(tokenNumber + 1, "type", "name", 0) &&
-                    (tokenObj.validToken(tokenNumber + 2, "value", ":=", 0) || tokenObj.validToken(tokenNumber + 2, "value", ":", 0)))) {
+                    tokenObj.validToken(tokenNumber + 2, "value", ":", 0))) {
                 node.parsingError = true;
                 node.errorLine = tokenObj.tokenLines[std::min(tokenNumber, tokenObj.tokenCount - 1)];
                 return node;
