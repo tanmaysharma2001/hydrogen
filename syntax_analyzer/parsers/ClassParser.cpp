@@ -4,7 +4,7 @@ public:
 };
 
 ClassNode* ClassParser::parse(int& tokenNumber, SyntaxToken& tokenObj) {
-    ClassNode* node = new ClassNode(); // Create a pointer to a new ClassNode object
+    ClassNode* node = new ClassNode(); 
     if (!(tokenObj.validToken(tokenNumber, "value", "class", 0) && tokenObj.validToken(tokenNumber + 1, "type", "name", 0))) {
         node->parsingError = true;
         node->errorLine = tokenObj.tokenLines[std::min(tokenNumber, tokenObj.tokenCount - 1)];
