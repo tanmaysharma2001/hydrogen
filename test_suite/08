@@ -1,8 +1,7 @@
 class Factorial is 
-	method factorial (num : Integer) : Integer is
-		var increment := 1
-		var result := 1
-
+    var increment : Integer(1)
+    var result : Integer(1)
+    method factorial (num : Integer) : Integer is
 		while increment.LessEqual(num) loop
 			result := result.Mult(increment)
 			increment := increment.Plus(1)
