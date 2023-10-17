@@ -5,6 +5,18 @@ public:
     std::vector<Node*> bodyNodes;
 
     ConstructorNode() {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Constructor" << std::endl;
+            std::cout << tab << "Parameters" << std::endl;
+            int paramCount = (int) parameterNames.size();
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();

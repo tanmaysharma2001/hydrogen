@@ -8,20 +8,59 @@ public:
     bool isDestructor;
 
     MethodNode() : isDestructor(false) {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Method name: " << name << std::endl;
+            std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
+            int paramCount = (int) parameterNames.size();
+            std::cout << tab << "Parameters" << std::endl;
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
     }
 
     MethodNode(bool isDestructor) : isDestructor(isDestructor) {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Method name: " << name << std::endl;
+            std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
+            int paramCount = (int) parameterNames.size();
+            std::cout << tab << "Parameters" << std::endl;
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
-        name = "Destruct";
+        name = "Destructor";
     }
 
     MethodNode(const std::string& name, const std::string& returnType) :
         name(name) {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Method name: " << name << std::endl;
+            std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
+            int paramCount = (int) parameterNames.size();
+            std::cout << tab << "Parameters" << std::endl;
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
@@ -31,6 +70,19 @@ public:
         name(name),
         parameterNames(paramNames),
         parameterTypes(paramTypes) {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Method name: " << name << std::endl;
+            std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
+            int paramCount = (int) parameterNames.size();
+            std::cout << tab << "Parameters" << std::endl;
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         bodyNodes = std::vector<Node*>();
     }
 
@@ -39,6 +91,19 @@ public:
         returnType(returnType),
         parameterNames(paramNames),
         parameterTypes(paramTypes) {
+        initializePrintFunction([&](std::string tab) {
+            std::cout << tab << "Method name: " << name << std::endl;
+            std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
+            int paramCount = (int) parameterNames.size();
+            std::cout << tab << "Parameters" << std::endl;
+            for (int i = 0; i < paramCount; i++) {
+                std::cout << (tab + "\t") << "param_name: " << parameterNames[i] << " ";
+                std::cout << "| param_type: " << parameterTypes[i] << std::endl;
+            }
+            for (auto node : bodyNodes) {
+                node->print(tab + "\t");
+            }
+        });
         bodyNodes = std::vector<Node*>();
     }
 

@@ -8,8 +8,7 @@
 #include "Node.h"
 #include "SyntaxToken.cpp"
 
-#include "ast/CallNode.cpp"
-#include "ast/ExpressionNode.cpp"
+#include "ast/CallAndExpressionNode.cpp"
 #include "ast/LoopNode.cpp"
 #include "ast/ConstructorNode.cpp"
 #include "ast/MethodNode.cpp"
@@ -55,21 +54,23 @@ public:
         };
 
         int tokenNumber = 0;
-        RootNode node;
+        RootNode* node = new RootNode();
 
         while (true) {
-            ClassNode classNode = ClassParser::parse(tokenNumber, tokenObj);
-            if (classNode.parsingError) {
-                exitWithError(classNode.errorLine);
+            ClassNode* classNode = ClassParser::parse(tokenNumber, tokenObj);
+            if (classNode->parsingError) {
+                exitWithError(classNode->errorLine);
             } else {
-                node.addClassDeclaration(&classNode);
-                tokenNumber = classNode.tokenNumber;
+                node->addClassDeclaration(classNode);
+                tokenNumber = classNode->tokenNumber;
             }
             if (tokenNumber >= (int) tokens.size()) {
                 break;
             }
         }
 
-        std::cout << "No Syntax Error Found" << std::endl;
+        std::cout << "No Syntax Error Found" << std::endl << std::endl;
+        std::cout << "Abstract Syntax Tree (children nested with tabs)" << std::endl << std::endl;
+        node->print("");
     }
 };
