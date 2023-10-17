@@ -11,9 +11,9 @@ Generic class: NONE
 	floatValue: NONE
 	Expression Type: call
 		parent: Real
-			integerValue: 1
+			integerValue: NONE
 			booleanValue: NONE
-			floatValue: NONE
+			floatValue: 1.0
 			Expression Type: literal
 	Method name: BinaryExponentiation
 	Return type: Real
