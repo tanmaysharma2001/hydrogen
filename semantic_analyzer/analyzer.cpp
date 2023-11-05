@@ -459,7 +459,6 @@ public:
         std::vector<std::string> newTypes;
         for (const auto& node : body) {
             std::string type = node->nodeType;
-            std::cout << type << std::endl;
             if (type == "VariableNode") {
                 VariableNode* varNode = (VariableNode*) node;
                 newVariables.push_back(varNode->name);
