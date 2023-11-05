@@ -8,6 +8,7 @@ public:
             std::cout << tab << "Return Statement" << std::endl;
             expression.print(tab + "\t");
         });
+        nodeType = "ReturnStatementNode";
     }
 
     void setExpression(const ExpressionNode& expr) {

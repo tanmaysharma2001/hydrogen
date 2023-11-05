@@ -17,6 +17,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "ConstructorNode";
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();

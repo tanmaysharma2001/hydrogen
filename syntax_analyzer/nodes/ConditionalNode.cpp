@@ -15,6 +15,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "ConditionalNode";
         ifBodyNodes = std::vector<Node*>();
         elseBodyNodes = std::vector<Node*>();
     }

@@ -21,6 +21,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "MethodNode";
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
@@ -40,6 +41,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "MethodNode";
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
@@ -61,6 +63,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "MethodNode";
         parameterNames = std::vector<std::string>();
         parameterTypes = std::vector<std::string>();
         bodyNodes = std::vector<Node*>();
@@ -83,6 +86,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "MethodNode";
         bodyNodes = std::vector<Node*>();
     }
 
@@ -104,6 +108,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "MethodNode";
         bodyNodes = std::vector<Node*>();
     }
 

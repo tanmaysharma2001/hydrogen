@@ -1,6 +1,6 @@
 class RootNode : public Node {
 public:
-    std::vector<Node*> classNodes;
+    std::vector<ClassNode*> classNodes;
 
     RootNode() {
         initializePrintFunction([this](std::string tab) {
@@ -8,7 +8,8 @@ public:
                 node->print(tab);
             }
         });
-        classNodes = std::vector<Node*>();
+        classNodes = std::vector<ClassNode*>();
+        nodeType = "RootNode";
     }
 
     void addClassDeclaration(ClassNode* node) {

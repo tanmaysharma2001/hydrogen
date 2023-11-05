@@ -6,6 +6,7 @@ public:
     int tokenNumber;
     int errorLine;
     bool parsingError;
+    std::string nodeType;
 
     std::function<void(std::string)> print; 
 

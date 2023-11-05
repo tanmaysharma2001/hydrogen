@@ -11,6 +11,7 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "LoopNode";
         bodyNodes = std::vector<Node*>();
     }
 
