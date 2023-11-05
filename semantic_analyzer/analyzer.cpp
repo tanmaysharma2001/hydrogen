@@ -370,8 +370,8 @@ public:
 
         std::vector<std::string> superClasses = getSuperClasses(returnTypeClass);
         if (targetReturnType != "-1" && returnTypeClass->name != targetReturnType
-                // && std::find(superClasses.begin(), superClasses.end(), targetReturnType) == superClasses.end())
-           ) {
+                && std::find(superClasses.begin(), superClasses.end(), targetReturnType) == superClasses.end())
+        {
             error(callNode);
             return false;
         }
