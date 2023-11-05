@@ -19,19 +19,26 @@ public:
                 node->print(tab + "\t");
             }
         });
+        nodeType = "ClassNode";
         variables = std::vector<VariableNode*>();
         methods = std::vector<MethodNode*>();
         constructors = std::vector<ConstructorNode*>();
     }
 
-    ClassNode(const std::string& name, const std::string& superClass, const std::vector<MethodNode*>& methodDeclarationNodes, const std::vector<ConstructorNode*>& constructorDeclarationNodes, const std::vector<VariableNode*>& variables) :
+    ClassNode(std::string name, std::string superClass,
+              std::vector<MethodNode*> methodDeclarationNodes,
+              std::vector<ConstructorNode*> constructorDeclarationNodes,
+              std::vector<VariableNode*> variables) :
         name(name),
         superClass(superClass),
         variables(variables),
         methods(methodDeclarationNodes),
         constructors(constructorDeclarationNodes) {}
 
-    ClassNode(const std::string& name, const std::string& superClass, const std::string& genericClass, const std::vector<MethodNode*>& methodDeclarationNodes, const std::vector<ConstructorNode*>& constructorDeclarationNodes, const std::vector<VariableNode*>& variables) :
+    ClassNode(std::string name, std::string superClass, std::string genericClass,
+              std::vector<MethodNode*> methodDeclarationNodes,
+              std::vector<ConstructorNode*> constructorDeclarationNodes,
+              std::vector<VariableNode*> variables) :
         name(name),
         superClass(superClass),
         genericClass(genericClass),
@@ -39,7 +46,7 @@ public:
         methods(methodDeclarationNodes),
         constructors(constructorDeclarationNodes) {}
 
-    ClassNode(const std::string& name, const std::string& superClass, const std::string& genericClass) :
+    ClassNode(std::string name, std::string superClass, std::string genericClass) :
         name(name),
         superClass(superClass),
         genericClass(genericClass),

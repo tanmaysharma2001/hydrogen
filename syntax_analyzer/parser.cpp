@@ -33,7 +33,7 @@ public:
 
     Parser() {}
 
-    void startParsing(std::vector<Token> tokens) {
+    RootNode* startParsing(std::vector<Token> tokens) {
         std::vector<std::string> tokenValues;
         std::vector<std::string> tokenTypes;
         std::vector<int> tokenLines;
@@ -69,10 +69,10 @@ public:
             }
         }
 
-        std::cout << "No Syntax Error Found" << std::endl << std::endl;
-        std::cout << "Abstract Syntax Tree (children nested with tabs)" << std::endl << std::endl;
-        node->print("");
+        // std::cout << "No Syntax Error Found" << std::endl << std::endl;
+        // std::cout << "Abstract Syntax Tree (children nested with tabs)" << std::endl << std::endl;
+        // node->print("");
 
-        free(node);
+        return node;
     }
 };

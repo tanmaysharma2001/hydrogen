@@ -9,6 +9,7 @@ public:
             std::cout << tab << "Lvalue: " << name << std::endl;
             expression->print(tab + "\t");
         });
+        nodeType = "AssignmentNode";
     }
 
     void setName(const std::string& name) {

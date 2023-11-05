@@ -43,6 +43,7 @@ CallNode::CallNode() {
             }
         }
     });
+    nodeType = "CallNode";
     arguments = std::vector<std::vector<ExpressionNode>>();
     parentNames = std::vector<std::string>();
 }
@@ -65,6 +66,7 @@ ExpressionNode::ExpressionNode() : integerValue(""), booleanValue(""), floatValu
         if (call != nullptr) 
             call->print(tab + "\t");
     });
+    nodeType = "ExpressionNode";
 }
 
 void ExpressionNode::setExpressionType(const std::string& expressionType) {

@@ -5,11 +5,15 @@ public:
 
     VariableNode(const std::string& name, const std::string& type) :
         name(name), expression() {
-        expression.setExpressionType("Call");    
+        expression.setExpressionType("call");    
+        CallNode* callNode = new CallNode();
+        callNode->parentNames = std::vector<std::string>{type};
+        expression.setCall(callNode);
         initializePrintFunction([&](std::string tab) {
             std::cout << tab << "Variable name: " << name << std::endl;
             expression.print(tab);
         });
+        nodeType = "VariableNode";
     }
 
     VariableNode() : expression(ExpressionNode()) {    
@@ -17,6 +21,7 @@ public:
             std::cout << tab << "Variable name: " << name << std::endl;
             expression.print(tab);
         });
+        nodeType = "VariableNode";
     }
 
     void setName(const std::string& name) {

@@ -5,7 +5,7 @@ Abstract Syntax Tree (children nested with tabs)
 Class name: Exponentiation
 Super class: NONE
 Generic class: NONE
-	Variable name: Result
+	Variable name: result
 	integerValue: NONE
 	booleanValue: NONE
 	floatValue: NONE
