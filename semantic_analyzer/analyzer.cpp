@@ -167,7 +167,7 @@ public:
                     } else if (findClass(calleeName) != nullptr) {
                         method = nullptr;
                         ClassNode* constructorClass = findClass(calleeName);
-                        bool isArgumentsOK = false;
+                        bool validArgs = false;
                         std::string argumentSignature;
                         for (auto argument : callNode->arguments[argCount]) {
                             ExpressionNode expNode = (ExpressionNode) argument;
@@ -184,13 +184,13 @@ public:
                                     parameterSignature += parameterType;
                                 }
                                 if (parameterSignature == argumentSignature) {
-                                    isArgumentsOK = true;
+                                    validArgs = true;
                                     break;
                                 }
                             }
                         }
 
-                        if (!isArgumentsOK) {
+                        if (!validArgs) {
                             error(callNode);
                         }
                         returnTypeClass = constructorClass;
