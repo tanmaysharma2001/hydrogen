@@ -14,14 +14,14 @@ end
 
 class Country is
     var capital: City
-    var cities: List[City]
+    var cities: Array[City]
 
-    this(capital: City, cities: List[City]) is
+    this(capital: City, cities: Array[City]) is
         this.capital := capital
         this.cities := cities
     end
     
     method getCapital() : City is 
-        return capital
+        return cities.get(1)
     end
 end

@@ -251,7 +251,6 @@ public:
                    const std::vector<std::string> variableTypes,
                    ClassNode* currentClass,
                    const std::string targetReturnType) {
-
         ClassNode* returnTypeClass = nullptr;
         size_t argCount = 0;
 
@@ -354,7 +353,11 @@ public:
                         }
                     }
                 }
-                returnTypeClass = (method->returnType.empty()) ? nullptr : findClass(method->returnType);
+                if (method->returnType != "T") {
+                    returnTypeClass = (method->returnType.empty()) ? nullptr : findClass(method->returnType);
+                } else {
+                    returnTypeClass = findClass(targetReturnType);
+                }
             }
             argCount++;
         }

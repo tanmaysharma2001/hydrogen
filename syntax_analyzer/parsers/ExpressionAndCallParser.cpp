@@ -25,7 +25,7 @@ CallNode* CallParser::parse(int& tokenNumber, SyntaxToken& tokenObj) {
         }
         currentCallee = tokenObj.tokenValues[tokenNumber];
         ++tokenNumber;
-        if (tokenObj.validToken(tokenNumber, "value", "(", 0)) {
+        if (tokenObj.validToken(tokenNumber, "value", "(", 0) || tokenObj.validToken(tokenNumber, "value", "[", 0)) {
             ++tokenNumber;
             while (true) {
                 ExpressionNode* enode = ExpressionParser::parse(tokenNumber, tokenObj);
@@ -41,6 +41,10 @@ CallNode* CallParser::parse(int& tokenNumber, SyntaxToken& tokenObj) {
                     continue;
                 }
                 if (tokenObj.validToken(tokenNumber, "value", ")", 0)) {
+                    ++tokenNumber;
+                    break;
+                }
+                if (tokenObj.validToken(tokenNumber, "value", "]", 0)) {
                     ++tokenNumber;
                     break;
                 }
