@@ -15,6 +15,9 @@ public:
             for (auto node : variables) {
                 node->print(tab + "\t");
             }
+            for (auto node : constructors) {
+                node->print(tab + "\t");
+            }
             for (auto node : methods) {
                 node->print(tab + "\t");
             }
