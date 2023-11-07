@@ -656,7 +656,7 @@ public:
         rootNode->classNodes.push_back(classReal);
         rootNode->classNodes.push_back(classBoolean);
         rootNode->classNodes.push_back(classArray);
-        rootNode->classNodes.push_back(classArray);
+        rootNode->classNodes.push_back(classList);
         rootNode->classNodes.push_back(anyValue);
         rootNode->classNodes.push_back(anyRef);
     }
