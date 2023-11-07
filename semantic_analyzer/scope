@@ -1,0 +1,10 @@
+class ScopeA is
+    var aVar: Integer(1)
+end 
+
+class ScopeB is 
+    var aVar: Integer(1)
+    method incrementA(): Integer is 
+        return aVar.Plus(1)
+    end
+end

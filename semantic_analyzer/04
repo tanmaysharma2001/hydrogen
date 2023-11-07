@@ -1,10 +1,8 @@
 class Add is 
     var a : Integer(1)
     var b : Integer(2)
-    var result : Integer(0)
 
     method add() : Integer is
-        result := a.Plus(b)
-        return result
-    end
+        return a.Plus(b)
+    end    
 end

@@ -36,7 +36,7 @@ public:
     void error(const Node* node) {
         std::cout << "ERROR\n\n";
         Token token = this->tokens[node->tokenNumber - 1];
-        std::cout << "Invalid semantics at " << token.line << ":" << token.column << ".\n";
+        std::cout << "Semantic error at " << token.line << ":" << token.column << ".\n";
         std::cout << "Invalid token at " << token.line << ":" << token.column << ".\n";
         std::exit(0);
     }
