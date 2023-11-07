@@ -1,11 +1,11 @@
-class IntegerArrayMax is
-    method MaxInt(a: Array[Integer]) : Integer is
-        var max : Integer(100000)
-        var i : Integer(1)
-        while i.Less(10) loop
-            if i.Greater(max) then max := Integer(2) end
-            i := i.Plus(1)
+class Fibonacci is
+    method fibonacci(n: Integer): Integer is 
+        if n.Equal(0) then 
+            return 1
         end
-        return max
-    end
+        if n.Equal(1) then 
+            return 1
+        end
+        return fibonacci(n.Minus(1)).Plus(fibonacci(n.Minus(2)))
+    end    
 end

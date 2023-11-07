@@ -1,7 +1,10 @@
-class Exponentiation is 
+class Add is 
     var a : Integer(1)
     var b : Integer(2)
+    var result : Integer(0)
+
     method add() : Integer is
-        return a.Plus(b)
+        result := a.Plus(b)
+        return result
     end
 end
