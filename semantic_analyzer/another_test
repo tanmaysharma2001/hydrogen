@@ -1,0 +1,6 @@
+class Test is 
+    var ret : Integer(3)
+    method returnRet() : Integer is 
+        return ret 
+    end 
+end

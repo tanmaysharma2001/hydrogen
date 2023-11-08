@@ -11,7 +11,7 @@ private:
     RootNode* rootNode;
     std::vector<Token> tokens;
 public:
-    std::vector<std::vector<std::string>> getVariables(const ClassNode* node) {
+    std::vector<std::vector<std::string>> getVariables(ClassNode* node) {
         std::vector<std::string> variableNames;
         std::vector<std::string> variableTypes;
 
@@ -20,6 +20,16 @@ public:
             std::string type = variable->expression.call->parentNames[0];
             variableNames.push_back(name);
             variableTypes.push_back(type);
+        }
+
+        for (const auto& name : getSuperClasses(node)) {
+            ClassNode* superClass = findClass(name);
+            if (!superClass->variables.empty()) {
+                for (const auto& variable : superClass->variables) {
+                    variableNames.push_back(variable->name);
+                    variableTypes.push_back(variable->expression.call->parentNames[0]);
+                }
+            }
         }
 
         return {variableNames, variableTypes};

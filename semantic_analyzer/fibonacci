@@ -1,6 +1,6 @@
 class Fibonacci is
     method fibonacci(n: Integer): Integer is 
-        if n.Same(0) then 
+        if n.Equal(0) then 
             return 1
         end
         if n.Equal(1) then 
