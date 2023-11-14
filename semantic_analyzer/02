@@ -1,26 +1,7 @@
-class City is
-    var population: Real
-    var area: Real
-
-    this(population: Real, area: Real) is
-        this.population := population
-        this.area := area
-    end
-
-    method calculatePopulationDensity() : Real is
-        return population.Div(area)
-    end
-end
-
-class Country is
-    var capital: City
-    var cities: Array[City]
-    this(capital: City, cities: Array[City]) is
-        this.capital := capital
-        this.cities := cities
-    end
-
-    method getCapital() : City is 
-        return cities.get(1)
+class Test is 
+    method MaxInt(x: Array[Integer]) : Integer is
+        var a : Integer(3)
+        var b : Integer(4)
+        return a.Plus(b)
     end
 end

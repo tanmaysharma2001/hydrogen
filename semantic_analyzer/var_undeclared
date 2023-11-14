@@ -1,0 +1,6 @@
+class A is 
+	method doSomething() : Integer is 
+		a := Integer(3)
+		return a
+	end
+end

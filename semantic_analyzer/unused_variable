@@ -1,0 +1,8 @@
+class A is 
+	method doSomething() : Integer is 
+		var a : Integer(1)
+		var b : Integer(2)
+		var c : Integer(3)
+		return a.Plus(b)
+	end
+end

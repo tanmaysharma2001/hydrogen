@@ -10,13 +10,10 @@ public:
             node->errorLine = tokenObj.tokenLines[std::min(tokenNumber, (int) tokenObj.tokenCount - 1)];
             return node;
         }
-        std::string prefix = "";
         if (tokenObj.validToken(tokenNumber, "value", "this", 0) && tokenObj.validToken(tokenNumber + 1, "value", ".", 0)) {
-            prefix += tokenObj.tokenValues[tokenNumber];
-            prefix += tokenObj.tokenValues[tokenNumber + 1];
             tokenNumber += 2;
         }
-        node->setName(prefix + tokenObj.tokenValues[tokenNumber]);
+        node->setName(tokenObj.tokenValues[tokenNumber]);
         tokenNumber += 2;
         ExpressionNode* exprNode = ExpressionParser::parse(tokenNumber, tokenObj);
         if (exprNode->parsingError) {

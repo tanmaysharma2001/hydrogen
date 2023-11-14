@@ -49,7 +49,7 @@ public:
     }
 
     MethodNode(const std::string& name, const std::string& returnType) :
-        name(name) {
+        name(name), returnType(returnType) {
         initializePrintFunction([&](std::string tab) {
             std::cout << tab << "Method name: " << name << std::endl;
             std::cout << tab << "Return type: " << (returnType.empty() ? "NONE" : returnType) << std::endl;
