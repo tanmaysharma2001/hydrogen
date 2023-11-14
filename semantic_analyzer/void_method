@@ -1,0 +1,14 @@
+class VoidMethod is
+	method multiplyValues(a: Integer, b: Integer) : Void is 
+		var result : Integer(0)
+		result := a.Mult(b)
+	end
+end
+
+class VoidSub extends VoidMethod is 
+	method callMultiply() : Void is
+		var a : Integer(2)
+		var b : Integer(3) 
+		this.multiplyValues(a, b)
+	end
+end

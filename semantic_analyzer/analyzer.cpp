@@ -166,7 +166,13 @@ public:
                       nVariableIndices,
                       classNode, method->returnType);
         }
+        std::set<std::string> varNameSet;
         for (const auto& variable : classNode->variables) {
+            if (!varNameSet.empty() && varNameSet.count(variable->name)) {
+                std::string errorMessage = "duplicate variable name [" + variable->name + "] in class body";
+                error(variable, errorMessage);
+            }
+            varNameSet.insert(variable->name);
             std::string type = variable->expression.call->parentNames[0];
             if (type != "Array") {
                 if (variable->expression.expressionType == "call") {
@@ -204,12 +210,24 @@ public:
         return true;
     }
 
-    MethodNode* getMethod(const ClassNode* classNode, const std::string& methodName) {
+    MethodNode* getMethod(ClassNode* classNode, const std::string& methodName) {
         for (auto method : classNode->methods) {
             if (method->name == methodName) {
                 return method;
             }
         }
+
+        for (auto& name : getSuperClasses(classNode)) {
+            ClassNode* superClass = findClass(name);
+            if (!superClass->methods.empty()) {
+                for (const auto& method : superClass->methods) {
+                    if (method->name == methodName) {
+                        return method;
+                    }
+                }
+            }
+        }
+
         return nullptr;
     }
 
