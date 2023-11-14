@@ -304,7 +304,7 @@ public:
                 if (method != nullptr) {
                     if (!method->parameterTypes.empty()) {
                         if (method->parameterTypes.size() != callNode->arguments[argCount].size()) {
-                            error(callNode);
+                            error(callNode, "invalid method arguments");
                         }
                         for (size_t i = 0; i < callNode->arguments[argCount].size(); ++i) {
                             ExpressionNode expNode = callNode->arguments[argCount][i];
