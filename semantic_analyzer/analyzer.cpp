@@ -168,8 +168,7 @@ public:
         }
         for (const auto& variable : classNode->variables) {
             std::string type = variable->expression.call->parentNames[0];
-            if (std::ranges::find(validReturnTypes, type) != end(validReturnTypes) && 
-                type != "Array") {
+            if (type != "Array") {
                 if (variable->expression.expressionType == "call") {
                     CallNode* callNode = variable->expression.call;
                     if (!checkCall(callNode, validVariables,
