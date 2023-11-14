@@ -1,0 +1,13 @@
+class A is 
+    var val : Integer(0)
+
+    this(val: Integer) is 
+        this.val := val
+    end
+end
+
+class B is
+    method initA() : Void is 
+        var ans : A(1)
+    end    
+end

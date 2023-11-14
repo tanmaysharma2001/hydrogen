@@ -1,8 +1,8 @@
-class Add is 
+class Add is         
     var a : Integer(1)
     var b : Integer(2)
-
-    method add() : Integer is
-        return a.Plus(b)
-    end    
+    var c : Integer(3)
+    method printA() : Integer is 
+        return a.Plus(b).Plus(c)
+    end
 end
