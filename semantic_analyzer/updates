@@ -1,0 +1,9 @@
+Stuff updated after the last presentation on 08-11-2023
+
+1. Corrected constructor matching (test: constructor_overload)
+2. Corrected method matching (test: wrong_init)
+3. AST simplification: Error for unused variables compiling with flag (UNUSED_VAR) (test: unused_variable)
+4. Corrected infinite loop when a subclass inherits from a superclass, and vice versa (test: inf_extends)
+5. Improved error messages
+6. Error for duplicate variable names (tests: duplicate_varname1, duplicate_varname2)
+7. Type for void methods (test: void_method)

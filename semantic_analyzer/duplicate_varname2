@@ -1,0 +1,4 @@
+class A is 
+    var result : Integer(1)
+    var result : Real(1.0)
+end
