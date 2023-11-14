@@ -1,0 +1,21 @@
+class Test is 
+    var something_else : A(3, 4)
+end
+
+class A is 
+    var a : Integer(1)
+    var b : Integer(2)
+    var c : Integer(3)
+
+    this(a: Integer, b: Integer) is
+        this.a := a
+        this.b := b
+    end
+
+    this(a: Integer, b: Integer, c: Integer) is
+        this.a := a
+        this.b := b
+        this.c := c
+    end
+end
+
