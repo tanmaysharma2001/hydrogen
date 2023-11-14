@@ -1,0 +1,3 @@
+class Exponentiation is 
+    var result : Integer(1, 2)
+end

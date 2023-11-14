@@ -166,6 +166,21 @@ public:
                       nVariableIndices,
                       classNode, method->returnType);
         }
+        for (const auto& variable : classNode->variables) {
+            std::string type = variable->expression.call->parentNames[0];
+            if (std::ranges::find(validReturnTypes, type) != end(validReturnTypes) && 
+                type != "Array") {
+                if (variable->expression.expressionType == "call") {
+                    CallNode* callNode = variable->expression.call;
+                    if (!checkCall(callNode, validVariables,
+                                   validMethods, variableTypes,
+                                   variableIndices,
+                                   classNode, "-1")) {
+                        error(variable, ("invalid expression assigned to variable \'" + variable->name + "\'"));
+                    }
+                }
+            }
+        }
     }
 
     bool checkExpression(ExpressionNode* node,
