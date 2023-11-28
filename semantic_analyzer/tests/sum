@@ -1,0 +1,9 @@
+class Sum is 
+	method getSum() : Integer is 
+		var a : Integer(2)
+		var b : Integer(3)
+		var c : Integer(0)
+		c := a.Plus(b)
+		return c
+	end
+end

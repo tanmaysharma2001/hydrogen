@@ -1,0 +1,10 @@
+class ScopeA is
+    var aVar: Integer(1)
+end 
+
+class ScopeB is 
+    var aVar: Real(1.5)
+    method incrementA(): Real is 
+        return aVar.Plus(1.0)
+    end
+end

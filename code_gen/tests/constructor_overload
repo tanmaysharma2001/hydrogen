@@ -1,5 +1,5 @@
 class Test is 
-    var something_else : A(3, 4, 5)
+    var something_else : A(3, 4)
 end
 
 class A is 

@@ -150,7 +150,7 @@ public:
                       validMethods, variableTypes, variableIndices, classNode, "-1");
         }
         for (const auto& method : classNode->methods) {
-            if (std::ranges::find(validReturnTypes, method->returnType) ==
+            if (std::find(begin(validReturnTypes), end(validReturnTypes), method->returnType) ==
                     end(validReturnTypes) && !findClass(method->returnType)) {
                 error(method, ("Invalid return type \'" + method->returnType + "\'"));
             }
@@ -887,30 +887,33 @@ public:
         for (int i = 0; i < int(rootNode->classNodes.size()) - 7; i++) {
             checkClass(rootNode->classNodes[i]);
         }
-        addDestructors();
+        // addDestructors();
         std::cout << "No Semantic Error Found" << std::endl;
+        for (int i = 0; i < 7; i++) {
+            rootNode->classNodes.pop_back();
+        }
     }
 };
 
 
-int main(int argc, char** argv) {
-    std::string file = argv[1];
+// int main(int argc, char** argv) {
+//     std::string file = argv[1];
 
-    Manager manager;
-    std::string source;
+//     Manager manager;
+//     std::string source;
 
-    freopen(file.c_str(), "r", stdin);
+//     freopen(file.c_str(), "r", stdin);
 
-    char ch;
-    while (EOF != (ch = getchar())) {
-        source += ch;
-    }
+//     char ch;
+//     while (EOF != (ch = getchar())) {
+//         source += ch;
+//     }
 
-    std::vector<Token> tokens = manager.analyze(source);
+//     std::vector<Token> tokens = manager.analyze(source);
 
-    Parser parser;
-    RootNode* node = parser.startParsing(tokens);
+//     Parser parser;
+//     RootNode* node = parser.startParsing(tokens);
 
-    Analyzer analyzer;
-    analyzer.analyze(node, tokens);
-}
+//     Analyzer analyzer;
+//     analyzer.analyze(node, tokens);
+// }

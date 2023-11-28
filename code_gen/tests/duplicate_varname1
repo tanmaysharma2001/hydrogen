@@ -1,0 +1,3 @@
+class A is 
+    var result : Integer(1)
+end

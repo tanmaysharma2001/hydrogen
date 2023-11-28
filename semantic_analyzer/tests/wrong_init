@@ -1,0 +1,6 @@
+class Exponentiation is 
+    method something(): Integer is
+        var result : Integer(1, 2)
+        return result
+    end
+end

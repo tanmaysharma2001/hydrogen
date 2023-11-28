@@ -1,0 +1,11 @@
+class Fibonacci is
+    method fibonacci(n: Integer): Integer is 
+        if n.Equal(0) then 
+            return 1
+        end
+        if n.Equal(1) then 
+            return 1
+        end
+        return fibonacci(n.Minus(1)).Plus(fibonacci(n.Minus(2)))
+    end    
+end

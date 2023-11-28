@@ -71,7 +71,7 @@ public:
 
         // std::cout << "No Syntax Error Found" << std::endl << std::endl;
         // std::cout << "Abstract Syntax Tree (children nested with tabs)" << std::endl << std::endl;
-        // node->print("");
+        node->print("");
 
         return node;
     }
