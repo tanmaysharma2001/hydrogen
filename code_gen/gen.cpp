@@ -293,24 +293,20 @@ public:
     }
 
     void generateConditionalNode(ConditionalNode* node) {
-        // Create basic blocks for the 'if' part, 'else' part, and continuation after the 'if-else'
         llvm::Function* currentFunction = Builder.GetInsertBlock()->getParent();
         llvm::BasicBlock* ifBB = llvm::BasicBlock::Create(TheContext, "if", currentFunction);
         llvm::BasicBlock* elseBB = llvm::BasicBlock::Create(TheContext, "else");
         llvm::BasicBlock* continueBB = llvm::BasicBlock::Create(TheContext, "ifcont");
 
-        // Generate the condition and create a conditional branch
         llvm::Value* condition = evaluateExpression(&node->expression); // Evaluate the conditional expression
         Builder.CreateCondBr(condition, ifBB, elseBB);
 
-        // Generate 'if' body
         Builder.SetInsertPoint(ifBB);
         // for (Node* bodyNode : node->ifBodyNodes) {
         //     generate(bodyNode); // Generate IR for each node in the 'if' body
         // }
         Builder.CreateBr(continueBB); // Jump to the continuation after the 'if' body
 
-        // Generate 'else' body
         currentFunction->getBasicBlockList().push_back(elseBB);
         Builder.SetInsertPoint(elseBB);
         // for (Node* bodyNode : node->elseBodyNodes) {
@@ -318,11 +314,8 @@ public:
         // }
         Builder.CreateBr(continueBB); // Jump to the continuation after the 'else' body
 
-        // Insert the continuation block
         currentFunction->getBasicBlockList().push_back(continueBB);
         Builder.SetInsertPoint(continueBB);
-
-        // Continue with the rest of the code after the 'if-else'
     }
 
 
