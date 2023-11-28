@@ -1,0 +1,15 @@
+class Fibonacci is
+    var a : Integer(52)
+    var b : Integer(11)
+    var c : Integer(14)
+
+    method Test(a: Integer, b: Integer) : Integer is 
+        while a.Less(b) loop
+            a := Integer(4)
+            if b.Less(a) then 
+                var e : Integer(2)
+            end
+        end
+        return a.Plus(b).Plus(c)
+    end
+end

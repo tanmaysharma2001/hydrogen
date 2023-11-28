@@ -1,0 +1,9 @@
+class A is 
+    var a: Integer(1)
+end
+
+class B extends A is
+    method returnA() : Integer is 
+        return a
+    end    
+end

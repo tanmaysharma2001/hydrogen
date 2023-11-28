@@ -1,0 +1,9 @@
+class A is
+    method func(val: Integer) : Integer is 
+        
+    end
+
+    method call() : Integer is 
+        return func()
+    end
+end

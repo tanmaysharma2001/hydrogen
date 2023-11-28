@@ -1,0 +1,15 @@
+class Test is 
+    method something(): Void is 
+        var a : Integer(2)
+    end
+end
+
+class B is 
+    var a : Integer(1)
+    var b : Integer(1)
+
+    this(a: Integer) is
+        this.a := a
+        this.b := b
+    end
+end

@@ -1,0 +1,91 @@
+Class name: Fibonacci
+Super class: NONE
+Generic class: NONE
+	Method name: fibonacci
+	Return type: Integer
+	Parameters
+		param_name: n | param_type: Integer
+		If Statement
+			integerValue: NONE
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: call
+				parent: n
+				parent: Equal
+					integerValue: 0
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: literal
+			Return Statement
+				integerValue: 1
+				booleanValue: NONE
+				floatValue: NONE
+				Expression Type: literal
+		If Statement
+			integerValue: NONE
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: call
+				parent: n
+				parent: Equal
+					integerValue: 1
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: literal
+			Return Statement
+				integerValue: 1
+				booleanValue: NONE
+				floatValue: NONE
+				Expression Type: literal
+		Return Statement
+			integerValue: NONE
+			booleanValue: NONE
+			floatValue: NONE
+			Expression Type: call
+				parent: fibonacci
+				parent: Plus
+				parent: Minus
+					integerValue: NONE
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: call
+						parent: n
+						parent: Minus
+							integerValue: 1
+							booleanValue: NONE
+							floatValue: NONE
+							Expression Type: literal
+					integerValue: NONE
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: call
+						parent: fibonacci
+							integerValue: NONE
+							booleanValue: NONE
+							floatValue: NONE
+							Expression Type: call
+								parent: n
+								parent: Minus
+									integerValue: 2
+									booleanValue: NONE
+									floatValue: NONE
+									Expression Type: literal
+					integerValue: NONE
+					booleanValue: NONE
+					floatValue: NONE
+					Expression Type: call
+						parent: fibonacci
+							integerValue: NONE
+							booleanValue: NONE
+							floatValue: NONE
+							Expression Type: call
+								parent: n
+								parent: Minus
+									integerValue: 3
+									booleanValue: NONE
+									floatValue: NONE
+									Expression Type: literal
+
+
+
+        return fibonacci(n.Minus(1)).Plus(fibonacci(n.Minus(2))).Minus(fibonacci(n.Minus(3)))

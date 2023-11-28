@@ -1,0 +1,7 @@
+class A extends B is 
+    var a: Integer(1)
+end
+
+class B extends A is
+    var a: Integer(1)
+end

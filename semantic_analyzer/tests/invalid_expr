@@ -1,0 +1,6 @@
+class A is 
+	method doSomething() : Integer is 
+		var a : a.Sub(1)
+		return a
+	end
+end
