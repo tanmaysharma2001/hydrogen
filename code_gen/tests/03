@@ -1,11 +1,9 @@
-class Fibonacci is
-    method fibonacci(n: Integer): Integer is 
-        if n.Equal(0) then 
-            return 1
-        end
-        if n.Equal(1) then 
-            return 1
-        end
-        return fibonacci(n.Minus(1)).Plus(fibonacci(n.Minus(2)))
+class Test is
+    method eval(a: Integer, b: Integer, c:Integer): Integer is
+        return c
+    end
+
+    method solve(a: Integer, b: Integer, c: Integer): Integer is
+        return eval(a.Minus(1), b, c)
     end    
 end

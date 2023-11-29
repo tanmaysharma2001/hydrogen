@@ -48,8 +48,9 @@ private:
     llvm::raw_fd_ostream output;
     std::error_code EC;
 
-    std::unordered_map<std::string, llvm::Value*> variables;
+    std::unordered_map<std::string, bool> variables;
     std::unordered_map<std::string, llvm::Value*> variableValue;
+    std::unordered_map<std::string, std::string> variableType;
 public:
     Generator(const std::string& filename) : Builder{TheContext}, output{filename, EC, llvm::sys::fs::OF_None} {
         TheModule = std::make_unique<llvm::Module>("hydrogen", TheContext);
@@ -85,8 +86,6 @@ public:
         generateIntegerLessConstant(integerStructType);
         generateIntegerEqualObject(integerStructType);
         generateIntegerEqualConstant(integerStructType);
-        generateMultObject(integerStructType);
-        generateMultMethod(integerStructType);
     }
 
     void generatePlusObject(llvm::StructType* integerStructType) {
@@ -173,66 +172,6 @@ public:
         llvm::Value* val = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), valAddr, "val");
 
         llvm::Value* result = Builder.CreateAdd(val, aParam, "result");
-
-        llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
-        llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-
-        Builder.CreateRet(resultObject);
-    }
-
-    void generateMultObject(llvm::StructType* integerStructType) {
-        llvm::FunctionType* multFunctionType = llvm::FunctionType::get(
-                integerStructType->getPointerTo(),
-        {integerStructType->getPointerTo(), integerStructType->getPointerTo()},
-        false
-                                               );
-        llvm::Function* multFunction = llvm::Function::Create(
-                                           multFunctionType, llvm::Function::ExternalLinkage, "Mult", TheModule.get()
-                                       );
-        llvm::BasicBlock* entryBlock = llvm::BasicBlock::Create(TheContext, "entry", multFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-
-        llvm::Argument* thisParam = multFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument* othParam = std::next(multFunction->arg_begin());
-        othParam->setName("oth");
-
-        llvm::Value* thisValAddr = Builder.CreateStructGEP(integerStructType, thisParam, 0, "thisValAddr");
-        llvm::Value* thisVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), thisValAddr, "thisVal");
-        llvm::Value* othValAddr = Builder.CreateStructGEP(integerStructType, othParam, 0, "othValAddr");
-        llvm::Value* othVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), othValAddr, "othVal");
-
-        llvm::Value* result = Builder.CreateMul(thisVal, othVal, "result");
-
-        llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
-        llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-
-        Builder.CreateRet(resultObject);
-    }
-
-    void generateMultMethod(llvm::StructType* integerStructType) {
-        llvm::FunctionType* multFunctionType = llvm::FunctionType::get(
-                integerStructType->getPointerTo(),
-        {integerStructType->getPointerTo(), llvm::Type::getInt32Ty(TheContext)},
-        false
-                                               );
-        llvm::Function* multFunction = llvm::Function::Create(
-                                           multFunctionType, llvm::Function::ExternalLinkage, "Mult", TheModule.get()
-                                       );
-        llvm::BasicBlock* entryBlock = llvm::BasicBlock::Create(TheContext, "entry", multFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-
-        llvm::Argument* thisParam = multFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument* aParam = std::next(multFunction->arg_begin());
-        aParam->setName("a");
-
-        llvm::Value* valAddr = Builder.CreateStructGEP(integerStructType, thisParam, 0, "valAddr");
-        llvm::Value* val = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), valAddr, "val");
-
-        llvm::Value* result = Builder.CreateMul(val, aParam, "result");
 
         llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
         llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
@@ -373,7 +312,13 @@ public:
 
     llvm::Type* getType(const std::string& type) {
         if (type == "Integer") {
-            return llvm::StructType::getTypeByName(TheContext, "Integer");
+            llvm::StructType* integerStructType = llvm::StructType::getTypeByName(TheContext, "Integer");
+            if (!integerStructType) {
+                std::cerr << "Integer struct type not found in context." << std::endl;
+                return nullptr; // Or handle the error as appropriate
+            }
+            // Return a pointer to the Integer struct type
+            return integerStructType->getPointerTo();
         } else {
             // handle other types
             return nullptr;
@@ -381,18 +326,14 @@ public:
     }
 
     void evaluateAssignment(AssignmentNode* node) {
+        // std::string name;
+        // ExpressionNode* expression;
+        std::cout << "variable name: " << node->name << std::endl;
         if (variables.count(node->name)) {
-            llvm::Value* variable = variables[node->name]; // Retrieve the existing variable
-            llvm::Value* newValue = evaluateExpression(node->expression);
-
-            if (!variable || !newValue) {
-                std::cerr << "Error: variable or new value is null" << std::endl;
-                return;
-            }
-
-            // Builder.CreateStore(newValue, variable);
-        } else {
-            std::cerr << "Error: variable " << node->name << " not declared." << std::endl;
+            std::cerr << "re-assigning: " << node->name << std::endl;
+            std::string type = node->expression->call->parentNames[0];
+            variableValue[node->name] = evaluateExpression(node->expression);
+            variableType[node->name] = type;
         }
     }
 
@@ -464,11 +405,7 @@ public:
                 generateReturnStatementNode(node);
                 ifReturns = true;
                 break;
-            } else if (type == "AssignmentNode") {
-                AssignmentNode* node = (AssignmentNode*) bodyNode;
-                evaluateAssignment(node);
-            }
-            else {
+            } else {
                 // handle other nodes
             }
         }
@@ -545,7 +482,7 @@ public:
             } else if (!call->parentNames.empty() == 1 && variables.count(call->parentNames[0])) {
                 objectInstance = variableValue[call->parentNames[0]];
                 ++i;
-            }
+            } 
             int callsCount = int(call->parentNames.size());
             for (; i < callsCount; i++) {
                 std::string methodString = call->parentNames[i];
@@ -609,26 +546,28 @@ public:
     void generateMethod(MethodNode * node) {
         std::vector<Type*> paramTypes;
         for (const auto& paramType : node->parameterTypes) {
-            Type* llvmType = getType(paramType)->getPointerTo();
+            Type* llvmType = getType(paramType);
             paramTypes.push_back(llvmType);
         }
 
-        Type* returnType = getType(node->returnType)->getPointerTo();
+        Type* returnType = getType(node->returnType);
         FunctionType* funcType = FunctionType::get(returnType, paramTypes, false);
         Function* func = Function::Create(funcType, Function::ExternalLinkage, node->name, TheModule.get());
+
         auto argIt = func->arg_begin();
+        int idx = 0;
+        for (const auto& paramName : node->parameterNames) {
+            argIt->setName(paramName);
+            variables[paramName] = true;
+            variableValue[paramName] = argIt;
+            variableType[paramName] = node->parameterTypes[idx++];
+            ++argIt;
+        }
 
         BasicBlock* entryBlock = BasicBlock::Create(TheContext, "entry", func);
         Builder.SetInsertPoint(entryBlock);
 
-        int idx = 0;
-        for (const auto& paramName : node->parameterNames) {
-            argIt->setName(paramName);
-            variables[paramName] = argIt;
-            variableValue[paramName] = argIt;
-            ++argIt;
-            ++idx;
-        }
+        llvm::Value* returnValue = nullptr;  // Initialize returnValue to nullptr
 
         for (Node* bodyNode : node->bodyNodes) {
             std::string type = bodyNode->nodeType;
@@ -646,17 +585,13 @@ public:
                 AssignmentNode* node = (AssignmentNode*) bodyNode;
                 evaluateAssignment(node);
             } else if (type == "VariableNode") {
-                VariableNode* variableNode = (VariableNode*) bodyNode;
-                std::string varTypeStr = variableNode->expression.call->parentNames[0];
-                llvm::Type* varType = getType(varTypeStr); // Convert high-level type to LLVM type
-                std::cout << "var: " << variableNode->name << std::endl;
-                std::cout << "type: " << varTypeStr << std::endl;
-                // Allocate memory for the variable
-                llvm::AllocaInst* alloca = Builder.CreateAlloca(varType, 0, variableNode->name.c_str());
-                variables[variableNode->name] = alloca; // Store the variable's address in the symbol table
-                // If the variable is initialized, evaluate the expression and store the result
-                llvm::Value* initVal = evaluateVariable(&variableNode->expression, varTypeStr);
-                variableValue[variableNode->name] = initVal;
+                VariableNode* variable = (VariableNode*) bodyNode;
+                std::string varType = variable->expression.call->parentNames[0];
+                std::cout << "var: " << variable->name << std::endl;
+                std::cout << "type: " << varType << std::endl;
+                variables[variable->name] = true;
+                variableValue[variable->name] = evaluateVariable(&variable->expression, varType);
+                variableType[variable->name] = varType;
             } else {
                 // handle other nodes
             }
@@ -666,6 +601,7 @@ public:
     }
 
     void generateMainMethod() {
+        // Declaration for printf
         llvm::FunctionType* printfType = llvm::FunctionType::get(
                                              llvm::IntegerType::getInt32Ty(TheContext),
                                              llvm::PointerType::get(llvm::Type::getInt8Ty(TheContext), 0),
@@ -673,6 +609,7 @@ public:
                                          );
         llvm::FunctionCallee printfFunc = TheModule->getOrInsertFunction("printf", printfType);
 
+        // Define and create the main function
         llvm::FunctionType* mainFunctionType = llvm::FunctionType::get(
                 llvm::Type::getInt32Ty(TheContext), false
                                                );
@@ -682,64 +619,43 @@ public:
         llvm::BasicBlock* entryBlock = llvm::BasicBlock::Create(TheContext, "entry", mainFunction);
         Builder.SetInsertPoint(entryBlock);
 
-        llvm::Type* integerStructType = getType("Integer");
+        // Prepare the argument for fibonacci
+        llvm::StructType* integerStructType = llvm::StructType::getTypeByName(TheContext, "Integer");
+        llvm::Value* fibArgObject = Builder.CreateAlloca(integerStructType);
+        llvm::Value* fibArgValAddr = Builder.CreateStructGEP(integerStructType, fibArgObject, 0);
+        Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 10)), fibArgValAddr);
 
-        // Prepare the arguments for 'solve': solve(2, 3, 4)
-        llvm::Value* argA = Builder.CreateAlloca(integerStructType, nullptr, "a");
-        llvm::Value* argAValAddr = Builder.CreateStructGEP(integerStructType, argA, 0);
-        Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 2)), argAValAddr);
-
-        llvm::Value* argB = Builder.CreateAlloca(integerStructType, nullptr, "b");
-        llvm::Value* argBValAddr = Builder.CreateStructGEP(integerStructType, argB, 0);
-        Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 3)), argBValAddr);
-
-        llvm::Value* argC = Builder.CreateAlloca(integerStructType, nullptr, "c");
-        llvm::Value* argCValAddr = Builder.CreateStructGEP(integerStructType, argC, 0);
-        Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 4)), argCValAddr);
-
-        // Call solve
-        llvm::Function* solveFunction = TheModule->getFunction("solve");
-        if (!solveFunction) {
-            llvm::errs() << "Solve function not found\n";
+        // Call fibonacci
+        llvm::Function* fibFunction = TheModule->getFunction("fibonacci");
+        if (!fibFunction) {
+            llvm::errs() << "Fibonacci function not found\n";
             Builder.CreateRet(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 0)));
             return;
         }
-
-        std::vector<llvm::Value*> args;
-        args.push_back(argA);
-        args.push_back(argB);
-        args.push_back(argC);
-
-        llvm::Value* solveResultObject = Builder.CreateCall(solveFunction, args, "solveResultObject");
+        llvm::Value* fibResultObject = Builder.CreateCall(fibFunction, {fibArgObject}, "fibResultObject");
 
         // Extract the integer value from the returned object
-        llvm::Value* solveResultValueAddr = Builder.CreateStructGEP(integerStructType, solveResultObject, 0, "solveResultValueAddr");
-        llvm::Value* solveResultValue = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), solveResultValueAddr, "solveResultValue");
+        llvm::Value* fibResultValueAddr = Builder.CreateStructGEP(integerStructType, fibResultObject, 0, "fibResultValueAddr");
+        llvm::Value* fibResultValue = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), fibResultValueAddr, "fibResultValue");
 
+        // Create the printf call to print the result
         llvm::Value* formatStr = Builder.CreateGlobalStringPtr("%d\n", "formatStr");
-        std::vector<llvm::Value*> printfArgs = {formatStr, solveResultValue};
+        std::vector<llvm::Value*> printfArgs = {formatStr, fibResultValue};
         Builder.CreateCall(printfFunc, printfArgs);
 
+        // Return from main
         Builder.CreateRet(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 0)));
     }
 
+
     void generateClass(ClassNode * node) {
-        for (VariableNode* variableNode : node->variables) {
-            std::string varTypeStr = variableNode->expression.call->parentNames[0];
-            if (varTypeStr == "Integer") {
-                llvm::Type* varType = getType(varTypeStr); // Convert high-level type to LLVM type
-                std::cout << "var: " << variableNode->name << std::endl;
-                std::cout << "type: " << varTypeStr << std::endl;
-                // Allocate memory for the variable
-                llvm::AllocaInst* alloca = Builder.CreateAlloca(varType, 0, variableNode->name.c_str());
-                variables[variableNode->name] = alloca; // Store the variable's address in the symbol table
-                // If the variable is initialized, evaluate the expression and store the result
-                llvm::Value* initVal = evaluateVariable(&variableNode->expression, varTypeStr);
-                variableValue[variableNode->name] = initVal;
-                Builder.CreateStore(initVal, alloca);
-                // variables[variable->name] = true;
-                // variableValue[variable->name] = evaluateExpression(&variable->expression);
-                // variableType[variable->name] = type;
+        // TODO: populate method signatures
+        for (VariableNode* variable : node->variables) {
+            std::string type = variable->expression.call->parentNames[0];
+            if (type == "Integer") {
+                variables[variable->name] = true;
+                variableValue[variable->name] = evaluateExpression(&variable->expression);
+                variableType[variable->name] = type;
             } else {
                 // handle other types
             }
