@@ -1,0 +1,15 @@
+class BranchingTest is
+    method solve(a: Integer, b: Integer, n: Integer) : Integer is 
+        var res : Integer(99)
+
+        if n.Greater(2) then
+            res := a.Mult(b)
+        end
+
+        if n.Less(3) then 
+            res := a.Plus(b)
+        end
+
+        return res
+    end
+end

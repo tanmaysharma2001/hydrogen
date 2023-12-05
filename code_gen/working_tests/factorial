@@ -1,0 +1,14 @@
+class Factorial is
+    method solve(n: Integer) : Integer is 
+        var res : Integer(1)
+
+        var i : Integer(1)
+
+        while i.Less(n.Plus(1)) loop
+            res := res.Mult(i)
+            i := i.Plus(1)
+        end
+        
+        return res
+    end
+end
