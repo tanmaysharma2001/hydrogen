@@ -429,129 +429,11 @@ public:
         Builder.CreateRet(cmpResult);
     }
 
-    void generateRealStruct() {
-        llvm::StructType *realStructType = llvm::StructType::create(TheContext, "Real");
-        realStructType->setBody(llvm::Type::getFloatTy(TheContext), /* isPacked */ false);
-
-        generateRealPlusObject(realStructType);
-        generateRealMinusObject(realStructType);
-        generateRealMultObject(realStructType);
-        generateRealDivObject(realStructType);
-    }
-
-    void generateRealPlusObject(llvm::StructType *realStructType) {
-        llvm::FunctionType *plusFunctionType = llvm::FunctionType::get(
-                realStructType->getPointerTo(),
-        {realStructType->getPointerTo(), realStructType->getPointerTo()},
-        false);
-        llvm::Function *plusFunction = llvm::Function::Create(
-                                           plusFunctionType, llvm::Function::ExternalLinkage, "RealPlus", TheModule.get());
-        llvm::BasicBlock *entryBlock = llvm::BasicBlock::Create(TheContext, "entry", plusFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-        llvm::Argument *thisParam = plusFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument *othParam = std::next(plusFunction->arg_begin());
-        othParam->setName("oth");
-        llvm::Value *thisValAddr = Builder.CreateStructGEP(realStructType, thisParam, 0, "thisValAddr");
-        llvm::Value *thisVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), thisValAddr, "thisVal");
-        llvm::Value *othValAddr = Builder.CreateStructGEP(realStructType, othParam, 0, "othValAddr");
-        llvm::Value *othVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), othValAddr, "othVal");
-        llvm::Value *result = Builder.CreateFAdd(thisVal, othVal, "result");
-        llvm::Value *resultObject = Builder.CreateAlloca(realStructType);
-        llvm::Value *resultValAddr = Builder.CreateStructGEP(realStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-        Builder.CreateRet(resultObject);
-    }
-
-    void generateRealMinusObject(llvm::StructType *realStructType) {
-        llvm::FunctionType *minusFunctionType = llvm::FunctionType::get(
-                realStructType->getPointerTo(),
-        {realStructType->getPointerTo(), realStructType->getPointerTo()},
-        false);
-        llvm::Function *minusFunction = llvm::Function::Create(
-                                            minusFunctionType, llvm::Function::ExternalLinkage, "RealMinus", TheModule.get());
-        llvm::BasicBlock *entryBlock = llvm::BasicBlock::Create(TheContext, "entry", minusFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-        llvm::Argument *thisParam = minusFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument *othParam = std::next(minusFunction->arg_begin());
-        othParam->setName("oth");
-        llvm::Value *thisValAddr = Builder.CreateStructGEP(realStructType, thisParam, 0, "thisValAddr");
-        llvm::Value *thisVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), thisValAddr, "thisVal");
-        llvm::Value *othValAddr = Builder.CreateStructGEP(realStructType, othParam, 0, "othValAddr");
-        llvm::Value *othVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), othValAddr, "othVal");
-        llvm::Value *result = Builder.CreateFSub(thisVal, othVal, "result"); // Use FSub for floating point subtraction
-        llvm::Value *resultObject = Builder.CreateAlloca(realStructType);
-        llvm::Value *resultValAddr = Builder.CreateStructGEP(realStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-        Builder.CreateRet(resultObject);
-    }
-
-    void generateRealMultObject(llvm::StructType *realStructType) {
-        llvm::FunctionType *multFunctionType = llvm::FunctionType::get(
-                realStructType->getPointerTo(),
-        {realStructType->getPointerTo(), realStructType->getPointerTo()},
-        false);
-        llvm::Function *multFunction = llvm::Function::Create(
-                                           multFunctionType, llvm::Function::ExternalLinkage, "RealMult", TheModule.get());
-        llvm::BasicBlock *entryBlock = llvm::BasicBlock::Create(TheContext, "entry", multFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-
-        llvm::Argument *thisParam = multFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument *othParam = std::next(multFunction->arg_begin());
-        othParam->setName("oth");
-
-        llvm::Value *thisValAddr = Builder.CreateStructGEP(realStructType, thisParam, 0, "thisValAddr");
-        llvm::Value *thisVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), thisValAddr, "thisVal");
-        llvm::Value *othValAddr = Builder.CreateStructGEP(realStructType, othParam, 0, "othValAddr");
-        llvm::Value *othVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), othValAddr, "othVal");
-
-        llvm::Value *result = Builder.CreateFMul(thisVal, othVal, "result");
-
-        llvm::Value *resultObject = Builder.CreateAlloca(realStructType);
-        llvm::Value *resultValAddr = Builder.CreateStructGEP(realStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-
-        Builder.CreateRet(resultObject);
-    }
-
-    void generateRealDivObject(llvm::StructType *realStructType) {
-        llvm::FunctionType *divFunctionType = llvm::FunctionType::get(
-                realStructType->getPointerTo(),
-        {realStructType->getPointerTo(), realStructType->getPointerTo()},
-        false);
-        llvm::Function *divFunction = llvm::Function::Create(
-                                          divFunctionType, llvm::Function::ExternalLinkage, "RealDiv", TheModule.get());
-        llvm::BasicBlock *entryBlock = llvm::BasicBlock::Create(TheContext, "entry", divFunction);
-        llvm::IRBuilder<> Builder(entryBlock);
-
-        llvm::Argument *thisParam = divFunction->arg_begin();
-        thisParam->setName("this");
-        llvm::Argument *othParam = std::next(divFunction->arg_begin());
-        othParam->setName("oth");
-
-        llvm::Value *thisValAddr = Builder.CreateStructGEP(realStructType, thisParam, 0, "thisValAddr");
-        llvm::Value *thisVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), thisValAddr, "thisVal");
-        llvm::Value *othValAddr = Builder.CreateStructGEP(realStructType, othParam, 0, "othValAddr");
-        llvm::Value *othVal = Builder.CreateLoad(llvm::Type::getFloatTy(TheContext), othValAddr, "othVal");
-
-        llvm::Value *result = Builder.CreateFDiv(thisVal, othVal, "result"); // Floating-point division
-
-        llvm::Value *resultObject = Builder.CreateAlloca(realStructType);
-        llvm::Value *resultValAddr = Builder.CreateStructGEP(realStructType, resultObject, 0);
-        Builder.CreateStore(result, resultValAddr);
-
-        Builder.CreateRet(resultObject);
-    }
-
-
     llvm::Type* getType(const std::string& type) {
         if (type == "Integer") {
             return llvm::StructType::getTypeByName(TheContext, "Integer");
-        } else if (type == "Real") {
-            return llvm::StructType::getTypeByName(TheContext, "Real");
         } else {
+            // handle other types
             return nullptr;
         }
     }
@@ -604,7 +486,7 @@ public:
                 AssignmentNode* node = (AssignmentNode*) bodyNode;
                 evaluateAssignment(node);
             } else {
-                
+                // handle other nodes
             }
         }
         // Jump back to the condition check
@@ -617,7 +499,7 @@ public:
         if (node->isVoid) {
             Builder.CreateRetVoid();
         } else {
-            std::cout << "creating return statement" << std::endl;
+            std::cout << "creating return value" << std::endl;
             llvm::Value* returnValue = evaluateExpression(&node->expression);
             if (returnValue != nullptr) {
                 Builder.CreateRet(returnValue);
@@ -716,27 +598,6 @@ public:
             llvm::Value* llvmVal = llvm::ConstantInt::get(TheContext, llvm::APInt(32, val, true));
             Builder.CreateStore(llvmVal, valPtr);
             return intObject;
-        } else if (type == "Real") {
-            CallNode* call = (CallNode*) node->call;
-            node = &call->arguments[0][0];
-            float val = std::stof(node->floatValue);
-            std::cerr << "found value: " << val << std::endl;
-
-            llvm::StructType* realStructType = llvm::StructType::getTypeByName(TheContext, "Real");
-            if (!realStructType) {
-                std::cerr << "Real struct type not found in context." << std::endl;
-                return nullptr;
-            }
-
-            llvm::Value* realObject = Builder.CreateAlloca(realStructType, 0, "realObject");
-
-            // Corrected CreateStructGEP call
-            llvm::Value* valPtr = Builder.CreateStructGEP(realStructType, realObject, 0, "valPtr");
-
-            llvm::Value* llvmVal = llvm::ConstantFP::get(TheContext, llvm::APFloat(val));
-            Builder.CreateStore(llvmVal, valPtr);
-
-            return realObject;
         } else {
             return nullptr;
         }
@@ -747,7 +608,6 @@ public:
             CallNode* call = (CallNode*) node->call;
             llvm::Value* objectInstance = nullptr;
             int i = 0;
-
             if (variables.count(call->parentName)) {
                 int callsCount = call->parentNames.size();
                 objectInstance = variableValue[call->parentName];
@@ -755,31 +615,11 @@ public:
                 objectInstance = variableValue[call->parentNames[0]];
                 ++i;
             }
-
-            bool isReal = false;
-            llvm::StructType* realStructType = llvm::StructType::getTypeByName(TheContext, "Real");
-
-            if (objectInstance && objectInstance->getType()->isPointerTy()) {
-                llvm::Type* pointedType = objectInstance->getType()->getPointerElementType();
-                if (pointedType == realStructType) {
-                    std::cout << "is real" << std::endl;
-                    isReal = true;
-                } else {
-                    std::cout << "not real" << std::endl;
-                }
-            } else {
-                std::cout << "objectInstance is not a pointer or is null" << std::endl;
-            }
-
             int callsCount = int(call->parentNames.size());
             for (; i < callsCount; i++) {
                 std::string methodString = call->parentNames[i];
                 if (methodString == "Equal")
                     methodString = "IntegerEqual";
-                if (isReal) {
-                    if (methodString == "Plus" || methodString == "Minus" || methodString == "Mult" || methodString == "Div")
-                        methodString = "Real" + methodString;
-                }
                 llvm::Function* method = TheModule->getFunction(methodString);
                 if (!method) {
                     std::cerr << "couldn't find method: " << call->parentNames[i] << std::endl;
@@ -823,19 +663,6 @@ public:
             llvm::Value* llvmVal = llvm::ConstantInt::get(TheContext, llvm::APInt(32, val, true));
             Builder.CreateStore(llvmVal, valPtr);
             return intObject;
-        } else if (!node->floatValue.empty()) {
-            float val = std::stof(node->floatValue);
-            std::cerr << "found value: " << val << std::endl;
-            llvm::Type* realStructType = llvm::StructType::getTypeByName(TheContext, "Real");
-            if (!realStructType) {
-                std::cerr << "Real struct type not found in context." << std::endl;
-                return nullptr;
-            }
-            llvm::Value* realObject = Builder.CreateAlloca(realStructType);
-            llvm::Value* valPtr = Builder.CreateStructGEP(realStructType, realObject, 0, "valPtr");
-            llvm::Value* llvmVal = llvm::ConstantFP::get(TheContext, llvm::APFloat(val));
-            Builder.CreateStore(llvmVal, valPtr);
-            return realObject;
         } else {
             // handle the type of literals
             return nullptr;
@@ -849,8 +676,6 @@ public:
     }
 
     void generateMethod(MethodNode * node) {
-        std::cout << "generating method" << std::endl;
-
         std::vector<Type*> paramTypes;
         for (const auto& paramType : node->parameterTypes) {
             Type* llvmType = getType(paramType)->getPointerTo();
@@ -869,6 +694,7 @@ public:
         for (const auto& paramName : node->parameterNames) {
             argIt->setName(paramName);
             variables[paramName] = argIt;
+            std::cout << "variable paramName: " << paramName << " has value: " << std::endl;
             variableValue[paramName] = argIt;
             ++argIt;
             ++idx;
@@ -908,6 +734,8 @@ public:
                 // handle other nodes
             }
         }
+
+        // get the actual object passed to the method
     }
 
     void generateMainMethod() {
@@ -929,14 +757,14 @@ public:
 
         llvm::Type* integerStructType = getType("Integer");
 
-        // Prepare the arguments for 'solve': solve(n)
+        // Prepare the arguments for 'solve': solve(2, 3, 4)
         // llvm::Value* argA = Builder.CreateAlloca(integerStructType, nullptr, "a");
         // llvm::Value* argAValAddr = Builder.CreateStructGEP(integerStructType, argA, 0);
-        // Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 10)), argAValAddr);
+        // Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 4)), argAValAddr);
 
         // llvm::Value* argB = Builder.CreateAlloca(integerStructType, nullptr, "b");
         // llvm::Value* argBValAddr = Builder.CreateStructGEP(integerStructType, argB, 0);
-        // Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 20)), argBValAddr);
+        // Builder.CreateStore(llvm::ConstantInt::get(TheContext, llvm::APInt(32, 3)), argBValAddr);
 
         llvm::Value* argC = Builder.CreateAlloca(integerStructType, nullptr, "n");
         llvm::Value* argCValAddr = Builder.CreateStructGEP(integerStructType, argC, 0);
@@ -982,23 +810,24 @@ public:
                 llvm::Value* initVal = evaluateVariable(&variableNode->expression, varTypeStr);
                 variableValue[variableNode->name] = initVal;
                 Builder.CreateStore(initVal, alloca);
-            } 
+                // variables[variable->name] = true;
+                // variableValue[variable->name] = evaluateExpression(&variable->expression);
+                // variableType[variable->name] = type;
+            } else {
+                // handle other types
+            }
         }
-
         for (auto methodNode : node->methods) {
             generateMethod(methodNode);
         }
+        generateMainMethod();
     }
 
     void generate(RootNode *node) {
         generateIntegerStruct();
-        generateRealStruct();
         for (auto classNode : node->classNodes) {
-            std::cout << "class name: " << classNode->name << std::endl;
             generateClass(classNode);
         }
-
-        generateMainMethod();
 
         std::error_code EC;
         llvm::raw_fd_ostream fileStream("hydrogen.ll", EC);

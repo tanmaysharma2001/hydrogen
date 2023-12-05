@@ -1,0 +1,11 @@
+class RecursionTest is
+    method solve(n: Integer) : Integer is 
+        var ret : Integer(1)
+
+        if n.Greater(2) then 
+            ret := solve(n.Minus(1))
+        end
+
+        return ret
+    end
+end
