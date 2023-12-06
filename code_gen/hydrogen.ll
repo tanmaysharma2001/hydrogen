@@ -134,6 +134,32 @@ entry:
   ret %Integer* %0
 }
 
+define %Integer* @Div(%Integer* %this, %Integer* %oth) {
+entry:
+  %thisValAddr = getelementptr inbounds %Integer, %Integer* %this, i32 0, i32 0
+  %thisVal = load i32, i32* %thisValAddr, align 4
+  %othValAddr = getelementptr inbounds %Integer, %Integer* %oth, i32 0, i32 0
+  %othVal = load i32, i32* %othValAddr, align 4
+  %result = sdiv i32 %thisVal, %othVal
+  %0 = alloca %Integer, align 8
+  %1 = getelementptr inbounds %Integer, %Integer* %0, i32 0, i32 0
+  store i32 %result, i32* %1, align 4
+  ret %Integer* %0
+}
+
+define %Integer* @Rem(%Integer* %this, %Integer* %oth) {
+entry:
+  %thisValAddr = getelementptr inbounds %Integer, %Integer* %this, i32 0, i32 0
+  %thisVal = load i32, i32* %thisValAddr, align 4
+  %othValAddr = getelementptr inbounds %Integer, %Integer* %oth, i32 0, i32 0
+  %othVal = load i32, i32* %othValAddr, align 4
+  %result = srem i32 %thisVal, %othVal
+  %0 = alloca %Integer, align 8
+  %1 = getelementptr inbounds %Integer, %Integer* %0, i32 0, i32 0
+  store i32 %result, i32* %1, align 4
+  ret %Integer* %0
+}
+
 define %Real* @RealPlus(%Real* %this, %Real* %oth) {
 entry:
   %thisValAddr = getelementptr inbounds %Real, %Real* %this, i32 0, i32 0

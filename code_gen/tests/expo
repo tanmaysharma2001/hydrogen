@@ -1,0 +1,13 @@
+class Exponentiation is 
+    method BinaryExponentiation(base: Real, exponent: Integer): Real is
+        var result : Real(1.0)
+        while exponent.Greater(Integer(0)) loop
+            if exponent.Rem(Integer(2)).Equal(1) then
+                result := result.Mult(base)
+            end
+            base := base.Mult(base)
+            exponent := exponent.Div(2)
+        end
+        return result
+    end
+end

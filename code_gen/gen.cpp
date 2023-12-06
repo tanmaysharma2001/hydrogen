@@ -89,6 +89,8 @@ public:
         generateIntegerEqualConstant(integerStructType);
         generateMultObject(integerStructType);
         generateMultMethod(integerStructType);
+        generateDivObject(integerStructType);
+        generateRemObject(integerStructType);
     }
 
     void generatePlusObject(llvm::StructType* integerStructType) {
@@ -206,6 +208,70 @@ public:
         llvm::Value* othVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), othValAddr, "othVal");
 
         llvm::Value* result = Builder.CreateMul(thisVal, othVal, "result");
+
+        llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
+        llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
+        Builder.CreateStore(result, resultValAddr);
+
+        Builder.CreateRet(resultObject);
+    }
+
+    void generateDivObject(llvm::StructType* integerStructType) {
+        llvm::FunctionType* divFunctionType = llvm::FunctionType::get(
+                integerStructType->getPointerTo(),
+        {integerStructType->getPointerTo(), integerStructType->getPointerTo()},
+        false
+                                              );
+        llvm::Function* divFunction = llvm::Function::Create(
+                                          divFunctionType, llvm::Function::ExternalLinkage, "Div", TheModule.get()
+                                      );
+        llvm::BasicBlock* entryBlock = llvm::BasicBlock::Create(TheContext, "entry", divFunction);
+        llvm::IRBuilder<> Builder(entryBlock);
+
+        llvm::Argument* thisParam = divFunction->arg_begin();
+        thisParam->setName("this");
+        llvm::Argument* othParam = std::next(divFunction->arg_begin());
+        othParam->setName("oth");
+
+        llvm::Value* thisValAddr = Builder.CreateStructGEP(integerStructType, thisParam, 0, "thisValAddr");
+        llvm::Value* thisVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), thisValAddr, "thisVal");
+        llvm::Value* othValAddr = Builder.CreateStructGEP(integerStructType, othParam, 0, "othValAddr");
+        llvm::Value* othVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), othValAddr, "othVal");
+
+        // Change here: Using CreateSDiv for signed division
+        llvm::Value* result = Builder.CreateSDiv(thisVal, othVal, "result");
+
+        llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
+        llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
+        Builder.CreateStore(result, resultValAddr);
+
+        Builder.CreateRet(resultObject);
+    }
+
+    void generateRemObject(llvm::StructType* integerStructType) {
+        llvm::FunctionType* remFunctionType = llvm::FunctionType::get(
+                integerStructType->getPointerTo(),
+        {integerStructType->getPointerTo(), integerStructType->getPointerTo()},
+        false
+                                              );
+        llvm::Function* remFunction = llvm::Function::Create(
+                                          remFunctionType, llvm::Function::ExternalLinkage, "Rem", TheModule.get()
+                                      );
+        llvm::BasicBlock* entryBlock = llvm::BasicBlock::Create(TheContext, "entry", remFunction);
+        llvm::IRBuilder<> Builder(entryBlock);
+
+        llvm::Argument* thisParam = remFunction->arg_begin();
+        thisParam->setName("this");
+        llvm::Argument* othParam = std::next(remFunction->arg_begin());
+        othParam->setName("oth");
+
+        llvm::Value* thisValAddr = Builder.CreateStructGEP(integerStructType, thisParam, 0, "thisValAddr");
+        llvm::Value* thisVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), thisValAddr, "thisVal");
+        llvm::Value* othValAddr = Builder.CreateStructGEP(integerStructType, othParam, 0, "othValAddr");
+        llvm::Value* othVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), othValAddr, "othVal");
+
+        // Change here: Using CreateSRem for signed remainder
+        llvm::Value* result = Builder.CreateSRem(thisVal, othVal, "result");
 
         llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
         llvm::Value* resultValAddr = Builder.CreateStructGEP(integerStructType, resultObject, 0);
@@ -603,8 +669,11 @@ public:
             } else if (type == "AssignmentNode") {
                 AssignmentNode* node = (AssignmentNode*) bodyNode;
                 evaluateAssignment(node);
+            } else if (type == "ConditionalNode") {
+                ConditionalNode* node = (ConditionalNode*) bodyNode;
+                generateConditionalNode(node);
             } else {
-                
+
             }
         }
         // Jump back to the condition check
@@ -982,7 +1051,7 @@ public:
                 llvm::Value* initVal = evaluateVariable(&variableNode->expression, varTypeStr);
                 variableValue[variableNode->name] = initVal;
                 Builder.CreateStore(initVal, alloca);
-            } 
+            }
         }
 
         for (auto methodNode : node->methods) {
