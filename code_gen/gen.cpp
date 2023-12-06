@@ -831,10 +831,7 @@ public:
             if (objectInstance && objectInstance->getType()->isPointerTy()) {
                 llvm::Type* pointedType = objectInstance->getType()->getPointerElementType();
                 if (pointedType == realStructType) {
-                    std::cout << "is real" << std::endl;
                     isReal = true;
-                } else {
-                    std::cout << "not real" << std::endl;
                 }
             } else {
                 std::cout << "objectInstance is not a pointer or is null" << std::endl;
@@ -909,12 +906,6 @@ public:
             // handle the type of literals
             return nullptr;
         }
-    }
-
-    void generateVariableNode(VariableNode* node) {
-        //         std::string name;
-        // ExpressionNode expression;
-
     }
 
     void generateMethod(MethodNode * node) {
