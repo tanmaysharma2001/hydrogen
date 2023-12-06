@@ -237,8 +237,6 @@ public:
         llvm::Value* thisVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), thisValAddr, "thisVal");
         llvm::Value* othValAddr = Builder.CreateStructGEP(integerStructType, othParam, 0, "othValAddr");
         llvm::Value* othVal = Builder.CreateLoad(llvm::Type::getInt32Ty(TheContext), othValAddr, "othVal");
-
-        // Change here: Using CreateSDiv for signed division
         llvm::Value* result = Builder.CreateSDiv(thisVal, othVal, "result");
 
         llvm::Value* resultObject = Builder.CreateAlloca(integerStructType);
